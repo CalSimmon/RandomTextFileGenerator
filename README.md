@@ -1,6 +1,6 @@
 # RandomWordFileGenerator.py
 
-A generator that creates N number of files with L number of lines using random words to create long files for testing purposes.  Can include a custom word list if sepcific words are required.
+A simple generator that creates N number of files with L number of lines using random words to create long files for testing purposes.  Can include a custom word list if sepcific words are required.  Files will be output into a folder called Output.
 
 ## 1. Setup:
 `pip install -r requirements.txt`

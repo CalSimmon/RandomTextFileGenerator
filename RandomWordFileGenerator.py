@@ -2,6 +2,7 @@ from random_word import RandomWords
 import random
 import sys
 import argparse
+import os
 
 class TextFileGenerator():
     def __init__(self, number_of_files, file_length, word_list):
@@ -10,6 +11,7 @@ class TextFileGenerator():
         self.file_length = int(file_length)
         self.word_list = word_list
         self.current_random_words = None
+        self.output_folder()
 
     def get_random_words_list(self):
         self.current_random_words = self.random_generator.get_random_words()
@@ -30,8 +32,12 @@ class TextFileGenerator():
 
     def generator(self):
         for n in range(self.number_of_files):
-            name = f'testing_file{n}.txt'
+            name = f'Output/testing_file{n}.txt'
             self.generate_file(name)
+
+    def output_folder(self):
+        if not os.path.isdir('Output'):
+            os.mkdir('Output')
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Generates N number of files with L number of lines using random full words.  Can include a word list if you need specific words included at random.")
