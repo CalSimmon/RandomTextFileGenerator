@@ -3,14 +3,24 @@ import random
 import sys
 import argparse
 import os
+import string
 
 class TextFileGenerator():
-    def __init__(self, number_of_files, file_length, word_list):
+    def __init__(self, number_of_files, file_length, word_list, file_name, start_number, ran_file_name):
         self.random_generator = RandomWords()
         self.number_of_files = int(number_of_files)
         self.file_length = int(file_length)
         self.word_list = word_list
         self.current_random_words = None
+        self.ran_file_name = ran_file_name
+        if not start_number == None:
+            self.start_number = start_number
+        else:
+            self.start_number = 0
+        if not file_name == None:
+            self.file_name = file_name
+        else:
+            self.file_name = 'testing_file'
         self.output_folder()
 
     def get_random_words_list(self):
@@ -32,8 +42,15 @@ class TextFileGenerator():
 
     def generator(self):
         for n in range(self.number_of_files):
-            name = f'Output/testing_file{n}.txt'
+            if self.ran_file_name:
+                name = f'Output/{self.random_file_name()}.txt'
+            else:
+                name = f'Output/{self.file_name}{n + int(self.start_number)}.txt'
             self.generate_file(name)
+
+    def random_file_name(self):
+        letters = string.ascii_letters
+        return (''.join(random.choice(letters) for i in range(10)))
 
     def output_folder(self):
         if not os.path.isdir('Output'):
@@ -44,13 +61,16 @@ def parse_arguments():
     parser.add_argument('Number of files', metavar='N', type=int, help="Number of files to create")
     parser.add_argument('Number of lines', metavar='L', type=int, help="Number of lines to add to each file")
     parser.add_argument('-w', '--word-list', metavar='[TEXT]', nargs='*', help="Word list should you want specific words included")
+    parser.add_argument('-s', '--start-number', metavar='[TEXT]', help="File number to start with.")
+    parser.add_argument('-n', '--file-name', metavar='[TEXT]', help="Name used to generate files.")
+    parser.add_argument('-r', '--random-file-name', action='store_true', help="Instead of uniform filenames, use a random filename each time.")
 
     args = parser.parse_args()
     return args
 
 def main():
     args = vars(parse_arguments())
-    generator = TextFileGenerator(args['Number of files'], args['Number of lines'], args['word_list'])
+    generator = TextFileGenerator(args['Number of files'], args['Number of lines'], args['word_list'], args['file_name'], args['start_number'], args['random_file_name'])
     generator.generator()
 
 if __name__ == '__main__':
